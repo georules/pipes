@@ -2,22 +2,26 @@ import cgi,urlparse,subprocess
 from os import curdir, sep
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
-rootdir = "/home/ubuntu/pipes/"
-processor = "/home/ubuntu/pipe-proc/process.py"
+
+cd = os.getcwd()
+rootdir = cd.replace("pipe-web","")
+pipesdir = rootdir + "pipes/"
+processor = rootdir + "pipe-proc/process.py"
 
 def update_pipe(pipename):
-	pipe = rootdir+pipename+"/"
+	pipe = pipesdir+pipename+"/"
 	p = subprocess.Popen(["python", processor, pipe])
 
 def get_pipe(pipename):
 	update_pipe(pipename)
-	cells = os.listdir(rootdir + pipename)
+	cells = os.listdir(pipesdir + pipename)
 	pipes = []
 	cells.sort()
 	for c in cells:
 		if c != "pipes":
-			data = get_cell(rootdir+pipename, c)
+			data = get_cell(pipesdir+pipename, c)
 			pipes.append([c,data])
+	print pipes
 	return pipes
 	
 def get_cell(pipename, cellname):
