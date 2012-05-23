@@ -1,0 +1,7 @@
+import sys
+data = sys.stdin.readline()
+data2 = data.split(",")
+s = 0
+for d in data2:
+	s += int(d) * 2
+print s
